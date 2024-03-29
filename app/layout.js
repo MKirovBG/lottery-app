@@ -1,10 +1,10 @@
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
-import coinIcon from "../images/coinIcon.png";
+import coinIcon from "./images/coinIcon.png";
 import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Roboto({ subsets: ["latin"], weight: ["500"] });
 
 export const metadata = {
   title: "Lottery App",
@@ -12,41 +12,58 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // Assuming currentUser represents the authentication status
+  const currentUser = false;
+
   return (
     <html lang="en">
       <body>
-        <header>
-          <nav className="navbar">
-            <ul>
-              <Link href="/">
-                <Image
-                  src={coinIcon}
-                  width={25}
-                  height={25}
-                  alt="Coin Icon"
-                />
-              </Link>
-              <li className={inter.className}>
-                <Link href="/competitions">Completitions</Link>
-              </li>
-              <li className={inter.className}>
-                <Link href="/about">About</Link>
-              </li>
-              <li className={inter.className}>
-                <Link href="/login">Login</Link>
-              </li>
-              <li className={inter.className}>
-                <Link href="/register">Register</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        {children}
-        <footer className="flex flex-col items-center justify-between">
-          <div className="copyRight">
-            Copyright ©<span>2024</span>. All rights reserved.
-          </div>
-        </footer>
+        <div className="flex flex-col max-h-screen">
+          <header>
+            <nav className="navbar">
+              <ul>
+                <li>
+                  <Link href="/" className="logo">
+                    <Image
+                      src={coinIcon}
+                      width={30}
+                      height={30}
+                      alt="Coin Icon"
+                    />
+                  </Link>
+                </li>
+              </ul>
+              <ul>
+                <li className={inter.className}>
+                  <Link href="/competitions">Completitions</Link>
+                </li>
+                <li className={inter.className}>
+                  <Link href="/about">About</Link>
+                </li>
+                {!currentUser ? (
+                  <>
+                    <li className={inter.className}>
+                      <Link href="/login">Login</Link>
+                    </li>
+                    <li className={inter.className}>
+                      <Link href="/register">Register</Link>
+                    </li>
+                  </>
+                ) : (
+                  <li className={inter.className}>
+                    <Link href="/logout">Logout</Link>
+                  </li>
+                )}
+              </ul>
+            </nav>
+          </header>
+          {children}
+          <footer className="flex flex-col items-center justify-between">
+            <div className="copyRight">
+              Copyright ©<span>2024</span>. All rights reserved.
+            </div>
+          </footer>
+        </div>
       </body>
     </html>
   );
